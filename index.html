@@ -668,6 +668,48 @@
     font-size: 1rem;
     color: #ccc;
 }
+        @media (max-width: 1024px) {
+    .left-fixed {
+        width: 30%; /* Adjust width for tablets */
+    }
+    .main-content {
+        margin-left: 35%; /* Adjust margin for tablets */
+        width: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    .left-fixed {
+        width: 40%; /* Adjust width for small tablets */
+        left: 0; /* Center align */
+        position: static; /* Remove fixed positioning */
+    }
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    section {
+        padding: 2rem 1rem; /* Reduce padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .left-fixed {
+        width: 100%; /* Full width on mobile */
+        padding: 1rem; /* Reduce padding */
+    }
+    .main-content {
+        width: 100%; /* Full width */
+        margin: 0;
+    }
+    .section-title, .section-subtitle {
+        font-size: 2rem; /* Smaller font sizes */
+    }
+    .stats p {
+        font-size: 1.2rem; /* Smaller text */
+    }
+}
+
 @media (max-width: 768px) {
     .skills-grid {
         grid-template-columns: repeat(2, 1fr);
