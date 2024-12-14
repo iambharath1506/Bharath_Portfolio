@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .left-fixed {
+    position: fixed;
+    top: 20%;
+    left: 2%;
+    height: auto;
+    width: 22%;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    animation: float 3s ease-in-out infinite;
+}
+
+
+        .profile-image {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .dashed-line {
+            position: absolute;
+            top: -10px;
+            left: -20px;
+            width: 180px;
+            height: 180px;
+            border: 2px dashed #f97316;
+            border-radius: 50%;
+        }
+
+        .left-fixed h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: black;
+        }
+
+        .left-fixed p {
+            color: #555555;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .icon-container .icon {
+            width: 30px;
+            height: 30px;
+            background: #f97316;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #f97316;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+
+        .main-content {
+            margin-left: 25%;
+            width: 70%;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .section-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .section-subtitle {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #555555;
+        }
+
+        .content {
+            font-size: 1.2rem;
+            text-align: left;
+            max-width: 800px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stats p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea {
+            padding: 0.8rem;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #222;
+            color: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 5px #f97316;
+        }
+        .project-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    background: #222;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.project-item {
+    margin-bottom: 2rem;
+}
+
+.project-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background: #222;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.project-link:hover {
+    background: #333;
+    transform: translateX(5px);
+}
+
+.project-image {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    margin-right: 1rem;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-details {
+    flex-grow: 1;
+}
+
+.project-details h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f97316;
+    margin-bottom: 0.5rem;
+}
+
+.project-details p {
+    font-size: 1rem;
+    color: #ccc;
+    word-wrap: break-word; /* Ensures long text breaks onto the next line */
+    overflow-wrap: break-word; /* Adds support for text wrapping */
+    white-space: normal; /* Ensures text wraps onto the next line */
+    max-height: 4.5rem; /* Sets a maximum height to avoid excessive text */
+    overflow: hidden; /* Ensures overflow text is hidden */
+    text-overflow: ellipsis; /* Adds an ellipsis (...) if text is too long */
+}
+
+.external-link-icon {
+    font-size: 2rem;
+    color: #f97316;
+    margin-left: 1rem;
+}
+
+.left-fixed {
+            position: fixed;
+            top: 20%;
+            left: 2%;
+            height: auto;
+            width: 22%;
+            background: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .profile-image {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .dashed-line {
+            position: absolute;
+            top: -10px;
+            left: -20px;
+            width: 180px;
+            height: 180px;
+            border: 2px dashed #f97316;
+            border-radius: 50%;
+        }
+
+        .left-fixed h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: black;
+        }
+
+        .left-fixed p {
+            color: #555555;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .icon-container .icon {
+            width: 30px;
+            height: 30px;
+            background: #f97316;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #f97316;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+
+        .main-content {
+            margin-left: 25%;
+            width: 70%;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .section-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .section-subtitle {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #555555;
+        }
+
+        .content {
+            font-size: 1.2rem;
+            text-align: left;
+            max-width: 800px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stats p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .project-item {
+            margin-bottom: 2rem;
+            background: #222;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .project-item:hover {
+            background: #333;
+            transform: translateX(5px);
+        }
+
+        .project-image {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            margin-right: 1rem;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .project-details h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f97316;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-details p {
+            font-size: 1rem;
+            color: #ccc;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-height: 4.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-arrow {
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            color: #f97316;
+            margin-left: 1rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea {
+            padding: 0.8rem;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #222;
+            color: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 5px #f97316;
+        }
+
+        button {
+            grid-column: span 2;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background: #f97316;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #d65e0e;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        /* Skill Card Styles */
+.skill-card {
+    background-color: #222;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Skill Icon */
+.skill-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    background: white;
+    padding: 10px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.skill-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: transparent; /* Remove the black background */
+    padding: 1rem;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px); /* Slight hover effect */
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); /* Subtle shadow */
+}
+
+.skill-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain; /* Keeps logos proportionate */
+    border-radius: 10px; /* Optional: Removes sharp edges */
+    background: transparent; /* Ensures no extra background around images */
+}
+
+.skill-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.skill-details h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white; /* White color for the skill name */
+    margin: 0;
+}
+
+.skill-details p {
+    font-size: 0.9rem;
+    color: grey; /* Grey color for the description */
+    margin: 0;
+}
+
+.skill-icon {
+    width: 60px; /* Set the size of the uploaded image */
+    height: 60px; /* Adjust as needed */
+    margin-bottom: 1rem;
+    border-radius: 12px; /* Rounded square edges for the uploaded images */
+    overflow: hidden; /* Ensures the images stay within the rounded square boundaries */
+    object-fit: cover; /* Ensures the image fills the area properly */
+    padding: 0; /* Remove padding */
+    background: none; /* Remove the gray background */
+    box-shadow: none; /* Remove any shadow, if present */
+}
+
+
+.skill-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f97316;
+    margin-bottom: 0.5rem;
+}
+
+.skill-description {
+    font-size: 1rem;
+    color: #ccc;
+}
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 480px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+        button {
+            grid-column: span 2;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background: #f97316;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #d65e0e;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-fixed">
+        <div class="profile-image">
+            <img src="https://via.placeholder.com/150" alt="Mark Smith">
+            <div class="dashed-line"></div>
+        </div>
+        <h1>Bharath Kumar Sasapu</h1>
+        <p>Student</p>
+        <div class="icon-container">
+            <div class="icon">🔥</div>
+            <p>Recent graduate looking for Full time Oppurtunity</p>
+        </div>
+        <div class="social-icons">
+            <a href="mailto:sasapubharathkumar@gmail.com" target="_blank">📧</a>
+            <a href="#" target="_blank">🔗</a>
+            <a href="#" target="_blank">🌐</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <section id="home">
+            <h1 class="section-title">Hey, This is Bharath</h1>
+            <h1 class="section-subtitle">Machine learning Enthuaist</h1>
+            <div class="content">
+                <p>Recent graduate with a strong background in machine learning and practical experience gained through academic projects and internships. Demonstrates exceptional teamwork, problem-solving, and time-management abilities. Ready to begin a career journey and make significant contributions with unwavering commitment and determination</p>
+                <div class="stats">
+                    <p>Hands on Experience Knowledge</p>
+                    <p>+05 PROJECTS COMPLETED</p>
+                    <p>+02 International Publications</p>
+                </div>
+            </div>
+        </section>
+        <section id="projects">
+            <h1 class="section-title">RECENT</h1>
+            <h1 class="section-subtitle">PROJECTS</h1>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <a href="https://example.com/sentiment-analysis" target="_blank" class="project-link">
+                        <div class="project-image">
+                            <img src="senti.png" alt="Sentiment Analysis Project">
+                        </div>
+                        <div class="project-details">
+                            <h2>Sentiment Analysis on Product Reviews</h2>
+                            <p>Classified product reviews using sentiment analysis to enhance services, integrated with Flask for deployment.</p>
+                        </div>
+                        <span class="project-arrow">➡</span>
+                    </a>
+                </li>
+                <li class="project-item">
+                    <a href="https://example.com/multi-disease-prediction" target="_blank" class="project-link">
+                        <div class="project-image">
+                            <img src="disease.jpeg" alt="Multi-Disease Prediction">
+                        </div>
+                        <div class="project-details">
+                            <h2>Multi-Disease Prediction System</h2>
+                            <p>Developed a Flask-integrated system to predict diseases from symptoms with probabilistic accuracy.</p>
+                        </div>
+                        <span class="project-arrow">➡</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        
+        <section id="experience">
+            <h1 class="section-title">PROFESSIONAL</h1>
+            <h1 class="section-subtitle">EXPERIENCE</h1>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <a href="https://example.com/java-intern" target="_blank" class="project-link">
+                        <div class="project-image">
+                            <img src="topnotch.jpeg" alt="Java Intern">
+                        </div>
+                        <div class="project-details">
+                            <h2>Java Intern</h2>
+                            <p>Topnotch Softsol Pvt. Ltd., Hyderabad, India (Nov 2022 - Mar 2023)</p>
+                            <p>Supervised development tasks, corrected and upgraded software, built databases, and designed scalable applications for data analysis.</p>
+                        </div>
+                        <span class="project-arrow">➡</span>
+                    </a>
+                </li>
+                <li class="project-item">
+                    <a href="https://example.com/web-developer-intern" target="_blank" class="project-link">
+                        <div class="project-image">
+                            <img src="learn.jpeg" alt="Web Developer Intern">
+                        </div>
+                        <div class="project-details">
+                            <h2>Web Developer Intern</h2>
+                            <p>Learnovate Ecommerce (Nov 2021 - Dec 2021)</p>
+                            <p>Developed user interfaces with JavaScript frameworks, optimized websites, and collaborated with teams to brainstorm new ideas.</p>
+                        </div>
+                        <span class="project-arrow">➡</span>
+                    </a>
+                </li>
+                <li class="project-item">
+                    <a href="https://example.com/research-assistant" target="_blank" class="project-link">
+                        <div class="project-image">
+                            <img src="GMRIT.jpeg" alt="Research Assistant">
+                        </div>
+                        <div class="project-details">
+                            <h2>Research Assistant</h2>
+                            <p>GMR Institute of Technology, Rajam, India (Jan 2022 - Nov 2022)</p>
+                            <p>Conducted research on machine learning projects, including sentiment analysis and multi-disease prediction, with successful publications in Springer.</p>
+                        </div>
+                        <span class="project-arrow">➡</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+                
+        <section id="skills" class="py-12">
+            <h1 class="section-title">TECHNICAL</h1>
+            <h1 class="section-subtitle">SKILLS</h1>
+            <div class="grid grid-cols-3 gap-8 mt-8 px-8">
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="c.png" alt="C" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">C</h2>
+                        <p class="text-gray-400 text-sm">Procedural programming.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="python.jpeg" alt="Python" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">Python</h2>
+                        <p class="text-gray-400 text-sm">Machine learning and automation.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="java.png" alt="Java" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">Java</h2>
+                        <p class="text-gray-400 text-sm">Object-oriented programming.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="htmlcss.jpeg" alt="HTML & CSS" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">HTML & CSS</h2>
+                        <p class="text-gray-400 text-sm">Responsive design.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="js.jpeg" alt="JavaScript" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">JavaScript</h2>
+                        <p class="text-gray-400 text-sm">Interactive web apps.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="flask.png" alt="Flask" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">Flask</h2>
+                        <p class="text-gray-400 text-sm">Backend frameworks.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="mysql.png" alt="MySQL" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">MySQL</h2>
+                        <p class="text-gray-400 text-sm">Database management.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="git.png" alt="GitHub" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">GitHub</h2>
+                        <p class="text-gray-400 text-sm">Version control systems.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-4 rounded-lg transition-transform transform hover:scale-105 hover:bg-black focus:outline-none">
+                    <img src="ml.webp" alt="Machine Learning" class="w-16 h-16">
+                    <div>
+                        <h2 class="text-white text-lg font-bold">Machine Learning</h2>
+                        <p class="text-gray-400 text-sm">Building predictive models.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+                                     
+                
+        <section id="contact">
+            <h1 class="section-title">LET'S WORK</h1>
+            <h1 class="section-subtitle">TOGETHER</h1>
+            <div class="content">
+                <form 
+    id="contactForm" 
+    action="https://formspree.io/f/xbljeveb" 
+    method="POST"
+    data-turbo="true"
+    class="space-y-6"
+>
+<input type="text" name="_honeypot" style="display:none">
+<input type="hidden" name="_subject" value="New Contact Form Submission!" />
+<input type="hidden" name="_captcha" value="false" />
+
+<div>
+    <label for="name" class="block text-white text-lg font-bold mb-2">Name</label>
+    <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your Name"
+        class="w-full px-4 py-3 text-white bg black-800 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+    />
+</div>
+                
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div>
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button
+        type="submit"
+        class="px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-purple-500 rounded-lg shadow hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-transform transform hover:scale-105"
+    >
+        Send Message
+    </button>
+                </form>
+            </div>
+        </section>
+        <footer class="bg-black text-white text-center py-4">
+            <p>&copy; 2024 Bharath Kumar Sasapu. All rights reserved.</p>
+        </footer>
+        
+    </div>
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+    
+            const form = e.target;
+            const formData = new FormData(form);
+    
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                },
+            });
+    
+            if (response.ok) {
+                alert("Thank you! Your message has been sent.");
+                form.reset(); // Clear the form
+            } else {
+                alert("Oops! Something went wrong. Please try again.");
+            }
+        });
+    </script>
+    
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.querySelectorAll("section").forEach((section) => {
+            gsap.fromTo(section, 
+                { opacity: 0, y: 50 }, 
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1, 
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        end: "bottom 20%",
+                        toggleActions: "play reverse play reverse",
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
